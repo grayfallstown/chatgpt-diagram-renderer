@@ -1,0 +1,642 @@
+Dateipfad: config\.eslintrc.js
+module.exports = {
+    parser: '@typescript-eslint/parser',
+    extends: [
+      'eslint:recommended',
+      'plugin:@typescript-eslint/recommended',
+      'prettier/@typescript-eslint',
+      'plugin:prettier/recommended'
+    ],
+    parserOptions: {
+      ecmaVersion: 2020,
+      sourceType: 'module',
+    },
+    rules: {
+      // Customize your linting rules here
+    },
+  };
+  
+
+Dateipfad: config\.prettierrc
+{
+  "singleQuote": true,
+  "trailingComma": "all"
+}
+
+
+Dateipfad: config\tsconfig.json
+{
+    "compilerOptions": {
+      "target": "ES6",
+      "module": "commonjs",
+      "strict": true,
+      "jsx": "react",
+      "moduleResolution": "node",
+      "esModuleInterop": true,
+      "skipLibCheck": true,
+      "forceConsistentCasingInFileNames": true,
+      "outDir": "./dist"
+    },
+    "include": ["src/**/*"],
+    "exclude": ["node_modules"]
+  }
+  
+
+Dateipfad: config\webpack.config.js
+const path = require('path');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
+
+module.exports = {
+  entry: './src/index.ts',
+  output: {
+    path: path.resolve(__dirname, 'dist'),
+    filename: 'bundle.js',
+  },
+  resolve: {
+    extensions: ['.ts', '.tsx', '.js'],
+  },
+  module: {
+    rules: [
+      {
+        test: /\.tsx?$/,
+        use: 'ts-loader',
+        exclude: /node_modules/,
+      },
+    ],
+  },
+  devtool: 'source-map',
+  devServer: {
+    static: {
+      directory: path.join(__dirname, 'dist'),
+    },
+    compress: true,
+    port: 9000,
+    hot: true,
+    devMiddleware: {
+      writeToDisk: true,
+    },
+  },
+  plugins: [
+    new CopyWebpackPlugin({
+      patterns: [
+        { from: 'manifest.json', to: 'manifest.json' },
+        { from: 'icons', to: 'icons' }
+      ],
+    }),
+  ],
+};
+
+
+Dateipfad: public\icons\icon-128.png
+
+Dateipfad: public\icons\icon-16.png
+
+Dateipfad: public\icons\icon-48.png
+
+Dateipfad: public\manifest.json
+{
+    "manifest_version": 2,
+    "name": "ChatGPT Diagram Renderer",
+    "version": "1.0",
+    "description": "Renders diagrams from ChatGPT output",
+    "permissions": [
+      "activeTab"
+    ],
+    "browser_action": {
+      "default_popup": "popup.html",
+      "default_icon": {
+        "16": "icons/icon-16.png",
+        "48": "icons/icon-48.png",
+        "128": "icons/icon-128.png"
+      }
+    },
+    "background": {
+      "scripts": ["background.js"]
+    },
+    "content_scripts": [
+      {
+        "matches": ["<all_urls>"],
+        "js": ["content.js"]
+      }
+    ],
+    "icons": {
+      "16": "icons/icon-16.png",
+      "48": "icons/icon-48.png",
+      "128": "icons/icon-128.png"
+    }
+  }
+  
+
+Dateipfad: public\popup.html
+
+Dateipfad: src\app\index.ts
+
+Dateipfad: src\app\test.ts
+const test: string = 'Hello, world';
+
+
+Dateipfad: src\scripts\background.js
+
+Dateipfad: src\scripts\content.js
+
+Dateipfad: .gitignore
+# Node modules
+node_modules/
+
+# Build output
+dist/
+
+# TypeScript cache
+*.tsbuildinfo
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# IDEs and Editors
+.vscode/
+.idea/
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Environment variables
+.env
+
+
+Dateipfad: llm.ps1
+# Boolean zum Aktivieren/Deaktivieren des Loggings
+$enableLogging = $false
+
+# Pfad zur .gitignore Datei
+$gitignorePath = ".\.gitignore"
+
+# Initialisiere die Ausgabe Datei
+$outputFile = "llm.txt"
+if (Test-Path $outputFile) {
+    Remove-Item $outputFile
+}
+
+# Debug-Ausgabe initialisieren
+$debugLogFile = "debug_log.txt"
+if (Test-Path $debugLogFile) {
+    Remove-Item $debugLogFile
+}
+
+function Write-DebugLog {
+    param (
+        [string]$message
+    )
+    if ($enableLogging) {
+        Add-Content -Path $debugLogFile -Value $message
+    }
+}
+
+Write-DebugLog "Lese .gitignore Datei: $gitignorePath"
+
+# Lies die .gitignore Datei aus und erstelle ein Array von ignorierten Pfaden/Dateien
+$ignorePatterns = Get-Content $gitignorePath | Where-Object { $_ -and $_ -notmatch '^\s*#' }
+
+# Füge package-lock.json zu den Ignoriermustern hinzu
+$ignorePatterns += "package-lock.json"
+
+Write-DebugLog "Gefundene Muster in .gitignore:"
+$ignorePatterns | ForEach-Object { Write-DebugLog $_ }
+
+# Funktion zum Überprüfen, ob ein Pfad ignoriert werden sollte
+function ShouldIgnore {
+    param (
+        [string]$filePath,
+        [string[]]$patterns
+    )
+    Write-DebugLog "Prüfe '$filePath' nach ignorierten Mustern"
+
+    $normalizedFilePath = $filePath.Replace("\", "/")
+    foreach ($pattern in $patterns) {
+        $normalizedPattern = $pattern.Replace("\", "/").TrimEnd("/")
+        $escapedPattern = [regex]::Escape($normalizedPattern).Replace("\*", ".*").Replace("\?", ".")
+        
+        # Verschiedene Varianten des Musters erzeugen
+        $patternsToTest = @(
+            $escapedPattern,
+            "$escapedPattern/.*",
+            "$escapedPattern\.*",
+            "$escapedPattern/*",
+            "$escapedPattern"
+        )
+        
+        foreach ($testPattern in $patternsToTest) {
+            if ($normalizedFilePath -match $testPattern) {
+                Write-DebugLog "Datei oder Verzeichnis '$filePath' ignoriert durch Muster '$pattern' (Testmuster '$testPattern')"
+                return $true
+            }
+        }
+    }
+    return $false
+}
+
+# Funktion zum rekursiven Durchlaufen der Verzeichnisse
+function ProcessDirectory {
+    param (
+        [string]$currentDir,
+        [string[]]$patterns
+    )
+    Write-DebugLog "Bearbeite '$currentDir'"
+
+    # Verzeichnisse durchsuchen
+    Get-ChildItem -Path $currentDir -Directory | ForEach-Object {
+        $relativePath = $_.FullName.Substring($PWD.Path.Length + 1)
+        if (-not (ShouldIgnore -filePath $relativePath -patterns $patterns)) {
+            Write-DebugLog "Bearbeite Verzeichnis '$relativePath'"
+            ProcessDirectory -currentDir $_.FullName -patterns $patterns
+        } else {
+            Write-DebugLog "Überspringe Verzeichnis: $relativePath"
+        }
+    }
+
+    # Dateien durchsuchen
+    Get-ChildItem -Path $currentDir -File | ForEach-Object {
+        $relativePath = $_.FullName.Substring($PWD.Path.Length + 1)
+        if (-not (ShouldIgnore -filePath $relativePath -patterns $patterns)) {
+            Write-DebugLog "Prüfe Datei '$relativePath'"
+            Add-Content -Path $outputFile -Value "Dateipfad: $relativePath"
+            Add-Content -Path $outputFile -Value (Get-Content -Path $_.FullName -Raw)
+            Add-Content -Path $outputFile -Value ""
+        } else {
+            Write-DebugLog "Überspringe Datei: $relativePath"
+        }
+    }
+}
+
+# Starte den Prozess im aktuellen Verzeichnis
+ProcessDirectory -currentDir $PWD.Path -patterns $ignorePatterns
+
+Write-DebugLog "Skript abgeschlossen."
+
+
+Dateipfad: llm.txt
+Dateipfad: config\.eslintrc.js
+module.exports = {
+    parser: '@typescript-eslint/parser',
+    extends: [
+      'eslint:recommended',
+      'plugin:@typescript-eslint/recommended',
+      'prettier/@typescript-eslint',
+      'plugin:prettier/recommended'
+    ],
+    parserOptions: {
+      ecmaVersion: 2020,
+      sourceType: 'module',
+    },
+    rules: {
+      // Customize your linting rules here
+    },
+  };
+  
+
+Dateipfad: config\.prettierrc
+{
+  "singleQuote": true,
+  "trailingComma": "all"
+}
+
+
+Dateipfad: config\tsconfig.json
+{
+    "compilerOptions": {
+      "target": "ES6",
+      "module": "commonjs",
+      "strict": true,
+      "jsx": "react",
+      "moduleResolution": "node",
+      "esModuleInterop": true,
+      "skipLibCheck": true,
+      "forceConsistentCasingInFileNames": true,
+      "outDir": "./dist"
+    },
+    "include": ["src/**/*"],
+    "exclude": ["node_modules"]
+  }
+  
+
+Dateipfad: config\webpack.config.js
+const path = require('path');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
+
+module.exports = {
+  entry: './src/index.ts',
+  output: {
+    path: path.resolve(__dirname, 'dist'),
+    filename: 'bundle.js',
+  },
+  resolve: {
+    extensions: ['.ts', '.tsx', '.js'],
+  },
+  module: {
+    rules: [
+      {
+        test: /\.tsx?$/,
+        use: 'ts-loader',
+        exclude: /node_modules/,
+      },
+    ],
+  },
+  devtool: 'source-map',
+  devServer: {
+    static: {
+      directory: path.join(__dirname, 'dist'),
+    },
+    compress: true,
+    port: 9000,
+    hot: true,
+    devMiddleware: {
+      writeToDisk: true,
+    },
+  },
+  plugins: [
+    new CopyWebpackPlugin({
+      patterns: [
+        { from: 'manifest.json', to: 'manifest.json' },
+        { from: 'icons', to: 'icons' }
+      ],
+    }),
+  ],
+};
+
+
+Dateipfad: public\icons\icon-128.png
+
+Dateipfad: public\icons\icon-16.png
+
+Dateipfad: public\icons\icon-48.png
+
+Dateipfad: public\manifest.json
+{
+    "manifest_version": 2,
+    "name": "ChatGPT Diagram Renderer",
+    "version": "1.0",
+    "description": "Renders diagrams from ChatGPT output",
+    "permissions": [
+      "activeTab"
+    ],
+    "browser_action": {
+      "default_popup": "popup.html",
+      "default_icon": {
+        "16": "icons/icon-16.png",
+        "48": "icons/icon-48.png",
+        "128": "icons/icon-128.png"
+      }
+    },
+    "background": {
+      "scripts": ["background.js"]
+    },
+    "content_scripts": [
+      {
+        "matches": ["<all_urls>"],
+        "js": ["content.js"]
+      }
+    ],
+    "icons": {
+      "16": "icons/icon-16.png",
+      "48": "icons/icon-48.png",
+      "128": "icons/icon-128.png"
+    }
+  }
+  
+
+Dateipfad: public\popup.html
+
+Dateipfad: src\app\index.ts
+
+Dateipfad: src\app\test.ts
+const test: string = 'Hello, world';
+
+
+Dateipfad: src\scripts\background.js
+
+Dateipfad: src\scripts\content.js
+
+Dateipfad: .gitignore
+# Node modules
+node_modules/
+
+# Build output
+dist/
+
+# TypeScript cache
+*.tsbuildinfo
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# IDEs and Editors
+.vscode/
+.idea/
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Environment variables
+.env
+
+
+Dateipfad: llm.ps1
+# Boolean zum Aktivieren/Deaktivieren des Loggings
+$enableLogging = $false
+
+# Pfad zur .gitignore Datei
+$gitignorePath = ".\.gitignore"
+
+# Initialisiere die Ausgabe Datei
+$outputFile = "llm.txt"
+if (Test-Path $outputFile) {
+    Remove-Item $outputFile
+}
+
+# Debug-Ausgabe initialisieren
+$debugLogFile = "debug_log.txt"
+if (Test-Path $debugLogFile) {
+    Remove-Item $debugLogFile
+}
+
+function Write-DebugLog {
+    param (
+        [string]$message
+    )
+    if ($enableLogging) {
+        Add-Content -Path $debugLogFile -Value $message
+    }
+}
+
+Write-DebugLog "Lese .gitignore Datei: $gitignorePath"
+
+# Lies die .gitignore Datei aus und erstelle ein Array von ignorierten Pfaden/Dateien
+$ignorePatterns = Get-Content $gitignorePath | Where-Object { $_ -and $_ -notmatch '^\s*#' }
+
+# Füge package-lock.json zu den Ignoriermustern hinzu
+$ignorePatterns += "package-lock.json"
+
+Write-DebugLog "Gefundene Muster in .gitignore:"
+$ignorePatterns | ForEach-Object { Write-DebugLog $_ }
+
+# Funktion zum Überprüfen, ob ein Pfad ignoriert werden sollte
+function ShouldIgnore {
+    param (
+        [string]$filePath,
+        [string[]]$patterns
+    )
+    Write-DebugLog "Prüfe '$filePath' nach ignorierten Mustern"
+
+    $normalizedFilePath = $filePath.Replace("\", "/")
+    foreach ($pattern in $patterns) {
+        $normalizedPattern = $pattern.Replace("\", "/").TrimEnd("/")
+        $escapedPattern = [regex]::Escape($normalizedPattern).Replace("\*", ".*").Replace("\?", ".")
+        
+        # Verschiedene Varianten des Musters erzeugen
+        $patternsToTest = @(
+            $escapedPattern,
+            "$escapedPattern/.*",
+            "$escapedPattern\.*",
+            "$escapedPattern/*",
+            "$escapedPattern"
+        )
+        
+        foreach ($testPattern in $patternsToTest) {
+            if ($normalizedFilePath -match $testPattern) {
+                Write-DebugLog "Datei oder Verzeichnis '$filePath' ignoriert durch Muster '$pattern' (Testmuster '$testPattern')"
+                return $true
+            }
+        }
+    }
+    return $false
+}
+
+# Funktion zum rekursiven Durchlaufen der Verzeichnisse
+function ProcessDirectory {
+    param (
+        [string]$currentDir,
+        [string[]]$patterns
+    )
+    Write-DebugLog "Bearbeite '$currentDir'"
+
+    # Verzeichnisse durchsuchen
+    Get-ChildItem -Path $currentDir -Directory | ForEach-Object {
+        $relativePath = $_.FullName.Substring($PWD.Path.Length + 1)
+        if (-not (ShouldIgnore -filePath $relativePath -patterns $patterns)) {
+            Write-DebugLog "Bearbeite Verzeichnis '$relativePath'"
+            ProcessDirectory -currentDir $_.FullName -patterns $patterns
+        } else {
+            Write-DebugLog "Überspringe Verzeichnis: $relativePath"
+        }
+    }
+
+    # Dateien durchsuchen
+    Get-ChildItem -Path $currentDir -File | ForEach-Object {
+        $relativePath = $_.FullName.Substring($PWD.Path.Length + 1)
+        if (-not (ShouldIgnore -filePath $relativePath -patterns $patterns)) {
+            Write-DebugLog "Prüfe Datei '$relativePath'"
+            Add-Content -Path $outputFile -Value "Dateipfad: $relativePath"
+            Add-Content -Path $outputFile -Value (Get-Content -Path $_.FullName -Raw)
+            Add-Content -Path $outputFile -Value ""
+        } else {
+            Write-DebugLog "Überspringe Datei: $relativePath"
+        }
+    }
+}
+
+# Starte den Prozess im aktuellen Verzeichnis
+ProcessDirectory -currentDir $PWD.Path -patterns $ignorePatterns
+
+Write-DebugLog "Skript abgeschlossen."
+
+
+Dateipfad: llm.txt
+
+
+Dateipfad: package.json
+{
+  "name": "chatgpt-diagram-renderer",
+  "version": "1.0.0",
+  "description": "A browser that renders Diagrams like PlantUML directly in the ChatGPT Webinterface (directly in the browser, nothing is sent to other servers) ",
+  "main": "src/index.ts",
+  "scripts": {
+    "build": "webpack --mode production",
+    "lint": "eslint 'src/**/*.{ts,tsx}'",
+    "format": "prettier --write 'src/**/*.{ts,tsx,js,json}'",
+    "dev": "webpack serve --mode development",
+    "firefox": "web-ext run --source-dir=dist --watch-file=dist"
+  },
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^7.10.0",
+    "@typescript-eslint/parser": "^7.10.0",
+    "copy-webpack-plugin": "^12.0.2",
+    "eslint": "^8.57.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-prettier": "^5.1.3",
+    "prettier": "^3.2.5",
+    "ts-loader": "^9.5.1",
+    "typescript": "^5.4.5",
+    "webextension-polyfill": "^0.12.0",
+    "webpack": "^5.91.0",
+    "webpack-cli": "^5.1.4",
+    "webpack-dev-server": "^5.0.4"
+  },
+  "author": "grayfallstown",
+  "license": "MIT"
+}
+
+
+Dateipfad: webpack.config.js
+const path = require('path');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
+
+module.exports = {
+  entry: './src/app/index.ts',
+  output: {
+    filename: 'bundle.js',
+    path: path.resolve(__dirname, 'dist'),
+  },
+  resolve: {
+    extensions: ['.ts', '.tsx', '.js'],
+  },
+  module: {
+    rules: [
+      {
+        test: /\.tsx?$/,
+        use: 'ts-loader',
+        exclude: /node_modules/,
+      },
+    ],
+  },
+  devtool: 'source-map',
+  devServer: {
+    static: {
+      directory: path.join(__dirname, 'dist'),
+    },
+    compress: true,
+    port: 9000,
+    hot: true,
+    devMiddleware: {
+      writeToDisk: true,
+    },
+  },
+  plugins: [
+    new CopyWebpackPlugin({
+      patterns: [
+        { from: 'manifest.json', to: 'manifest.json' },
+        { from: 'icons', to: 'icons' }
+      ],
+    }),
+  ],
+};
+
+
