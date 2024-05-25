@@ -6,14 +6,8 @@ import pako from 'pako';
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 const supportedFormats = {
-  "language-plantuml": { endpoint: "plantuml", png: true },
-  "language-mermaid": { endpoint: "mermaid", png: true },
-  "language-blockdiag": { endpoint: "blockdiag", png: true },
-  "language-seqdiag": { endpoint: "seqdiag", png: true },
   "language-actdiag": { endpoint: "actdiag", png: true },
-  "language-nwdiag": { endpoint: "nwdiag", png: true },
-  "language-packetdiag": { endpoint: "packetdiag", png: true },
-  "language-rackdiag": { endpoint: "rackdiag", png: true },
+  "language-blockdiag": { endpoint: "blockdiag", png: true },
   "language-c4plantuml": { endpoint: "c4plantuml", png: true },
   "language-d2": { endpoint: "d2", png: false },
   "language-dbml": { endpoint: "dbml", png: false },
@@ -21,8 +15,14 @@ const supportedFormats = {
   "language-erd": { endpoint: "erd", png: true },
   "language-excalidraw": { endpoint: "excalidraw", png: false },
   "language-graphviz": { endpoint: "graphviz", png: true },
+  "language-mermaid": { endpoint: "mermaid", png: true },
   "language-nomnoml": { endpoint: "nomnoml", png: false },
+  "language-nwdiag": { endpoint: "nwdiag", png: true },
+  "language-packetdiag": { endpoint: "packetdiag", png: true },
   "language-pikchr": { endpoint: "pikchr", png: false },
+  "language-plantuml": { endpoint: "plantuml", png: true },
+  "language-rackdiag": { endpoint: "rackdiag", png: true },
+  "language-seqdiag": { endpoint: "seqdiag", png: true },
   "language-structurizr": { endpoint: "structurizr", png: true },
   "language-svgbob": { endpoint: "svgbob", png: false },
   "language-symbolator": { endpoint: "symbolator", png: false },
@@ -199,6 +199,7 @@ function processDiagram(node, format) {
     const img = document.createElement('img');
     img.src = imageUrl;
     img.className = 'chatgpt-diagram-renderer-image';
+    img.style.display = 'none';
 
     img.onload = () => {
       const originalWidth = img.naturalWidth;
@@ -206,20 +207,18 @@ function processDiagram(node, format) {
       img.style.maxWidth = `${maxWidth}px`;
       img.style.width = '100%';
       img.style.height = 'auto';
-      img.style.display = 'block'; // Ensure the image is visible after loading
+      img.style.display = 'block';
     };
 
     img.onerror = () => {
-      log(`Error loading image from URL: ${imageUrl}`);
+      log(`Failed to load image for ${format}`);
     };
 
     img.addEventListener('click', openModal);
 
     if (!node.classList.contains('chatgpt-diagram-renderer-processed')) {
       node.classList.add('chatgpt-diagram-renderer-processed');
-      img.style.display = 'none'; // Hide the image initially
       node.parentNode.insertBefore(img, node);
-      node.style.display = 'none'; // Hide the original code block
     }
   } catch (error) {
     log(`Error processing diagram for ${format}: ${error.message}`);
