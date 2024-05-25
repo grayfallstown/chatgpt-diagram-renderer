@@ -70,6 +70,7 @@ function applyDarkModeStyles() {
     img.chatgpt-diagram-renderer-image {
       transition: width 0.2s ease-in-out;
       cursor: pointer;
+      display: none;
     }
     .chatgpt-diagram-renderer-modal-backdrop {
       position: fixed;
@@ -207,6 +208,11 @@ function processDiagram(node, format) {
       img.style.maxWidth = `${maxWidth}px`;
       img.style.width = '100%';
       img.style.height = 'auto';
+      img.style.display = 'block';
+    };
+
+    img.onerror = () => {
+      log(`Error loading image: ${imageUrl}`);
     };
 
     img.addEventListener('click', openModal);
@@ -229,3 +235,6 @@ function encodeDiagramCode(diagramCode) {
 
 // Apply initial styles and start observing
 applyDarkModeStyles();
+document.querySelectorAll('code').forEach(node => {
+  processNode(node);
+});
