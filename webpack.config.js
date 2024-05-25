@@ -3,7 +3,6 @@ const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 module.exports = {
   entry: {
-    main: './src/app/index.ts',
     content: './src/scripts/content.js'
   },
   output: {
@@ -11,12 +10,11 @@ module.exports = {
     path: path.resolve(__dirname, 'dist'),
   },
   resolve: {
-    extensions: ['.ts', '.tsx', '.js'],
+    extensions: ['.js'],
     fallback: {
       "fs": false,
       "path": require.resolve("path-browserify"),
       "os": require.resolve("os-browserify/browser"),
-      "child_process": false,
       "assert": require.resolve("assert"),
       "stream": require.resolve("stream-browserify"),
       "buffer": require.resolve("buffer"),
@@ -25,8 +23,7 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.tsx?$/,
-        use: 'ts-loader',
+        test: /\.js$/,
         exclude: /node_modules/,
       },
     ],
@@ -47,9 +44,7 @@ module.exports = {
     new CopyWebpackPlugin({
       patterns: [
         { from: path.resolve(__dirname, 'manifest.json'), to: 'manifest.json' },
-        { from: path.resolve(__dirname, 'icons'), to: 'icons' },
-        { from: path.resolve(__dirname, 'popup.html'), to: 'popup.html' },
-        { from: path.resolve(__dirname, 'src/scripts/background.js'), to: 'scripts/background.js' }
+        { from: path.resolve(__dirname, 'icons'), to: 'icons' }
       ],
     }),
   ],

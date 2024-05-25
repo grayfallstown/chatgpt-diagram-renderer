@@ -1,4 +1,3 @@
-import plantumlEncoder from 'plantuml-encoder';
 import _ from 'lodash';
 import pako from 'pako';
 
@@ -70,7 +69,6 @@ function applyDarkModeStyles() {
     img.chatgpt-diagram-renderer-image {
       transition: width 0.2s ease-in-out;
       cursor: pointer;
-      display: none;
     }
     .chatgpt-diagram-renderer-modal-backdrop {
       position: fixed;
@@ -208,18 +206,20 @@ function processDiagram(node, format) {
       img.style.maxWidth = `${maxWidth}px`;
       img.style.width = '100%';
       img.style.height = 'auto';
-      img.style.display = 'block';
+      img.style.display = 'block'; // Ensure the image is visible after loading
     };
 
     img.onerror = () => {
-      log(`Error loading image: ${imageUrl}`);
+      log(`Error loading image from URL: ${imageUrl}`);
     };
 
     img.addEventListener('click', openModal);
 
     if (!node.classList.contains('chatgpt-diagram-renderer-processed')) {
       node.classList.add('chatgpt-diagram-renderer-processed');
+      img.style.display = 'none'; // Hide the image initially
       node.parentNode.insertBefore(img, node);
+      node.style.display = 'none'; // Hide the original code block
     }
   } catch (error) {
     log(`Error processing diagram for ${format}: ${error.message}`);
@@ -235,6 +235,3 @@ function encodeDiagramCode(diagramCode) {
 
 // Apply initial styles and start observing
 applyDarkModeStyles();
-document.querySelectorAll('code').forEach(node => {
-  processNode(node);
-});

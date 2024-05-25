@@ -138,3 +138,7 @@ dist
 *.njsproj
 *.sln
 *.sw?
+
+# Local scripts
+llm.ps1
+llm.txt
