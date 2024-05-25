@@ -1,4 +1,5 @@
 const path = require('path');
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 module.exports = {
@@ -12,12 +13,8 @@ module.exports = {
   resolve: {
     extensions: ['.js'],
     fallback: {
-      "fs": false,
-      "path": require.resolve("path-browserify"),
-      "os": require.resolve("os-browserify/browser"),
-      "assert": require.resolve("assert"),
-      "stream": require.resolve("stream-browserify"),
-      "buffer": require.resolve("buffer"),
+      "buffer": require.resolve("buffer/"),
+      "stream": require.resolve("stream-browserify")
     }
   },
   module: {
@@ -41,6 +38,7 @@ module.exports = {
     },
   },
   plugins: [
+    new CleanWebpackPlugin(),
     new CopyWebpackPlugin({
       patterns: [
         { from: path.resolve(__dirname, 'manifest.json'), to: 'manifest.json' },
