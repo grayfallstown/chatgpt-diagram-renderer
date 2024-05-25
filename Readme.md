@@ -12,8 +12,8 @@ Renders diagrams and charts like PlantUML, Mermaid, and many more directly in th
 
 ## Features
 
-- **Easy Diagram Rendering:** Automatically render diagrams written in code blocks.
-- **Dark Mode Support:** Adjusts diagrams to fit your theme preferences.
+- **Easy Diagram Rendering:** Automatically render diagrams written by ChatGPT.
+- **Dark Mode Support:** Darkmode automatically active when active in your system.
 - **Zoomable Images:** Click on diagrams to view them in a larger modal.
 - **Wide Format Support:** Supports multiple diagram formats via Kroki.io.
 
@@ -88,7 +88,7 @@ Special thanks to the developers of [Kroki.io](https://kroki.io) and [Code Copil
 
 ## License
 
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
+This project is open source and licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
 
 ---
 
