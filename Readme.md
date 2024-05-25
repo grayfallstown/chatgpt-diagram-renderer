@@ -6,9 +6,9 @@
 
 ## ChatGPT Diagram Renderer
 
-Renders diagrams like PlantUML, Mermaid, and more directly in the ChatGPT web interface using [Kroki.io](https://kroki.io). This extension supports a variety of diagram types and ensures that all diagrams are rendered seamlessly within the chat.
+Renders diagrams and charts like PlantUML, Mermaid, and many more directly in the ChatGPT web interface using [Kroki.io](https://kroki.io). This extension supports a variety of diagram types and ensures that all diagrams are rendered seamlessly within the chat.
 
-![ChatGPT Diagram Renderer](https://your-image-url.com)  <!-- Placeholder for a screenshot of the extension in action -->
+![Screenshot](docs/screenshot.png)
 
 ## Features
 
@@ -16,42 +16,48 @@ Renders diagrams like PlantUML, Mermaid, and more directly in the ChatGPT web in
 - **Dark Mode Support:** Adjusts diagrams to fit your theme preferences.
 - **Zoomable Images:** Click on diagrams to view them in a larger modal.
 - **Wide Format Support:** Supports multiple diagram formats via Kroki.io.
-  
+
+## No Bullshit
+
+- No Ads
+- No trackers
+- No asking for rating the extension
+- No asking for donations in your browser
+- Only external service used is [Kroki.io](https://kroki.io) to render the images
+
 ## Supported Diagrams
 
 This extension supports the following diagram types:
 
-- PlantUML
-- Mermaid
-- BlockDiag
-- SeqDiag
 - ActDiag
-- NwDiag
-- PacketDiag
-- RackDiag
+- BlockDiag
 - C4 with PlantUML
 - D2
 - DBML
 - Ditaa
-- Erd
 - Excalidraw
 - GraphViz
+- Mermaid
 - Nomnoml
+- NwDiag
+- PacketDiag
 - Pikchr
-- Structurizr
+- PlantUML
+- RackDiag
+- SeqDiag
 - SvgBob
 - Symbolator
-- TikZ
 - UMLet
 - Vega
 - Vega-Lite
 - WaveDrom
+
+**Support for these formats is active, but might not work correctly**
+
+- Erd
+- Structurizr
+- TikZ
 - WireViz
-
-## Screenshots
-
-<!-- Add screenshots here -->
-![Diagram Example](https://your-screenshot-url.com)
 
 ## Installation
 
@@ -67,33 +73,22 @@ The extension is not yet available in the extension stores. Stay tuned for the o
 
 1. Install the extension from the [Chrome Web Store](https://chrome.google.com/webstore/detail/your-extension-id) or [Firefox Add-ons](https://addons.mozilla.org/en-US/firefox/addon/your-extension-id) once it is available.
 2. Open ChatGPT in your browser.
-3. Write your diagram code in a code block with the appropriate language identifier.
+3. Let ChatGPT create some diagrams.
 4. The diagram will be rendered automatically!
 
 ## Donations
 
 If you find this extension useful and would like to support its development, consider donating via PayPal.
 
-[![Donate](https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/donate?hosted_button_id=YOUR_BUTTON_ID)
+[![Donate](https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/donate?hosted_button_id=PDLLVF5XVMJPC)
 
 ## Acknowledgments
 
-Special thanks to the developers of [Kroki.io](https://kroki.io) and [Code Pilot Custom GPT](https://1lm.me/cc) for their amazing tools and support.
-
-![Kroki.io Logo](https://kroki.io/logo.png)  <!-- Placeholder for Kroki.io logo -->
-![Code Pilot Custom GPT Logo](https://1lm.me/cc.png)  <!-- Placeholder for Code Pilot Custom GPT logo -->
+Special thanks to the developers of [Kroki.io](https://kroki.io) and [Code Copilot](https://promptspellsmith.com/g/g-2DQzU5UZl) for their amazing tools and services.
 
 ## License
 
 This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
-
-## Contributing
-
-We welcome contributions! Please read our [CONTRIBUTING](CONTRIBUTING.md) guidelines for more details.
-
-## Contact
-
-For any inquiries or issues, please open an issue on GitHub or contact us via email at support@yourdomain.com.
 
 ---
 
