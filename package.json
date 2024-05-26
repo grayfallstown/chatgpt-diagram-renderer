@@ -5,13 +5,13 @@
   "main": "src/scripts/content.js",
   "scripts": {
     "build": "webpack --mode production",
-    "lint": "eslint 'src/**/*.js'",
-    "format": "prettier --write 'src/**/*.js'",
+    "build:firefox": "npm run build && cd dist && zip -r ../chatgpt-diagram-renderer-firefox.zip .",
+    "lint": "eslint 'src/**/*.{js,jsx}'",
+    "format": "prettier --write 'src/**/*.{js,jsx,json}'",
     "dev": "webpack serve --mode development",
     "firefox": "web-ext run --source-dir=dist --watch-files=dist"
   },
   "devDependencies": {
-    "buffer": "^6.0.3",
     "clean-webpack-plugin": "^4.0.0",
     "copy-webpack-plugin": "^12.0.2",
     "eslint": "^8.57.0",
@@ -24,9 +24,8 @@
     "webpack-dev-server": "^5.0.4"
   },
   "dependencies": {
+    "buffer": "^6.0.3",
     "lodash": "^4.17.21",
     "pako": "^2.0.4"
-  },
-  "author": "grayfallstown",
-  "license": "MIT"
+  }
 }

@@ -142,3 +142,7 @@ dist
 # Local scripts
 llm.ps1
 llm.txt
+
+
+# build extensions
+artifacts/
