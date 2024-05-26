@@ -34,11 +34,6 @@ const supportedFormats = {
   "language-wireviz": { endpoint: "wireviz", png: true },
 };
 
-// Logging function
-function log(message) {
-  console.log(`[ChatGPT Diagram Renderer] ${message}`);
-}
-
 // Apply dark mode styles
 function applyDarkModeStyles() {
   const style = document.createElement('style');
@@ -125,106 +120,6 @@ function createModal(imageUrl) {
   document.body.appendChild(modal);
 }
 
-// Throttled function to handle mutations
-const handleMutationsThrottled = _.throttle(handleMutations, 200);
-
-// Initialize MutationObserver
-const observer = new MutationObserver(handleMutationsThrottled);
-observer.observe(document.body, { childList: true, subtree: true });
-
-log('content.js running');
-
-// Handle DOM mutations
-function handleMutations(mutationsList) {
-  try {
-    for (const mutation of mutationsList) {
-      if (mutation.type === 'childList') {
-        mutation.addedNodes.forEach(node => {
-          if (node.nodeType === Node.ELEMENT_NODE) {
-            processNode(node);
-          }
-        });
-      }
-    }
-  } catch (error) {
-    log(`Error processing mutations: ${error.message}`);
-  }
-}
-
-// Process added nodes
-function processNode(node) {
-  Object.keys(supportedFormats).forEach(format => {
-    if (node.matches && node.matches(`code.${format}`)) {
-      processDiagram(node, format);
-    }
-
-    node.querySelectorAll(`code.${format}`).forEach(childNode => {
-      processDiagram(childNode, format);
-    });
-  });
-}
-
-// Open modal with larger image
-function openModal(event) {
-  const modalBackdrop = document.createElement('div');
-  modalBackdrop.className = 'chatgpt-diagram-renderer-modal-backdrop';
-
-  const modal = document.createElement('div');
-  modal.className = 'chatgpt-diagram-renderer-modal-content';
-
-  const modalImage = document.createElement('img');
-  modalImage.src = event.target.src;
-  modalImage.className = 'chatgpt-diagram-renderer-modal-image';
-
-  modal.appendChild(modalImage);
-  modalBackdrop.appendChild(modal);
-  document.body.appendChild(modalBackdrop);
-
-  modalBackdrop.addEventListener('click', () => {
-    document.body.removeChild(modalBackdrop);
-  });
-}
-
-////////////////////////////////////////////////////////////////////////////////////////////////////
-// Diagram Processing Functionality
-////////////////////////////////////////////////////////////////////////////////////////////////////
-
-// Process diagram nodes
-function processDiagram(node, format) {
-  try {
-    const diagramCode = node.textContent.trim();
-    const { endpoint, png } = supportedFormats[format];
-    const imageUrl = `https://kroki.io/${endpoint}/${png ? 'png' : 'svg'}/${encodeDiagramCode(diagramCode)}`;
-
-    const img = document.createElement('img');
-    img.src = imageUrl;
-    img.className = 'chatgpt-diagram-renderer-image';
-    img.style.display = 'none';
-
-    img.onload = () => {
-      const originalWidth = img.naturalWidth;
-      const maxWidth = originalWidth * 1.75;
-      img.style.maxWidth = `${maxWidth}px`;
-      img.style.width = '100%';
-      img.style.height = 'auto';
-      img.style.display = 'block';
-    };
-
-    img.onerror = () => {
-      log(`Failed to load image for ${format}`);
-    };
-
-    img.addEventListener('click', openModal);
-
-    if (!node.classList.contains('chatgpt-diagram-renderer-processed')) {
-      node.classList.add('chatgpt-diagram-renderer-processed');
-      node.parentNode.insertBefore(img, node);
-    }
-  } catch (error) {
-    log(`Error processing diagram for ${format}: ${error.message}`);
-  }
-}
-
 // Function to encode diagram code for URL
 function encodeDiagramCode(diagramCode) {
   const compressed = pako.deflate(diagramCode, { level: 9 });
@@ -232,5 +127,72 @@ function encodeDiagramCode(diagramCode) {
   return base64.replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
 }
 
-// Apply initial styles and start observing
+// Process diagram nodes
+function processDiagram(node, format) {
+  try {
+    const codeBlock = node.matches('code') ? node : node.querySelector('code');
+    if (!codeBlock) {
+      return;
+    }
+    const diagramCode = codeBlock.textContent.trim();
+    const { endpoint, png } = supportedFormats[format];
+    const imageUrl = `https://kroki.io/${endpoint}/${png ? 'png' : 'svg'}/${encodeDiagramCode(diagramCode)}`;
+
+    let img = node.previousElementSibling;
+    if (!img || img.tagName !== 'IMG' || !img.classList.contains('chatgpt-diagram-renderer-image')) {
+      img = document.createElement('img');
+      img.className = 'chatgpt-diagram-renderer-image';
+      img.style.display = 'none';
+
+      img.onload = () => {
+        const originalWidth = img.naturalWidth;
+        const maxWidth = originalWidth * 1.75;
+        img.style.maxWidth = `${maxWidth}px`;
+        img.style.width = '100%';
+        img.style.height = 'auto';
+        img.style.display = 'block';
+      };
+
+      img.onerror = () => {};
+
+      img.addEventListener('click', () => createModal(img.src));
+      node.parentNode.insertBefore(img, node);
+    }
+
+    if (img.src !== imageUrl) {
+      img.src = imageUrl;
+    }
+  } catch (error) {}
+}
+
+// Periodically check and process code blocks
+function periodicCheckAndProcessCodeBlocks() {
+  Object.keys(supportedFormats).forEach(format => {
+    document.querySelectorAll(`code.${format}`).forEach(block => {
+      let previousContent = block.textContent.trim();
+
+      const updateFunction = () => {
+        const currentContent = block.textContent.trim();
+        if (currentContent !== previousContent) {
+          previousContent = currentContent;
+          processDiagram(block, format);
+        }
+      };
+
+      processDiagram(block, format);
+      const intervalId = setInterval(updateFunction, 500);
+
+      // Stop observing after 10 seconds
+      setTimeout(() => {
+        clearInterval(intervalId);
+      }, 10000);
+    });
+  });
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+// Wiring up
+////////////////////////////////////////////////////////////////////////////////////////////////////
+
 applyDarkModeStyles();
+setInterval(periodicCheckAndProcessCodeBlocks, 3000);
