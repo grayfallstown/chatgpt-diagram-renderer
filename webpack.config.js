@@ -1,6 +1,7 @@
 const path = require('path');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
+const ZipPlugin = require('zip-webpack-plugin');
 
 module.exports = {
   entry: {
@@ -13,7 +14,7 @@ module.exports = {
   resolve: {
     extensions: ['.js'],
     fallback: {
-      "buffer": require.resolve("buffer/"),
+      "buffer": require.resolve("buffer"),
       "stream": require.resolve("stream-browserify")
     }
   },
@@ -45,5 +46,9 @@ module.exports = {
         { from: path.resolve(__dirname, 'icons'), to: 'icons' }
       ],
     }),
+    new ZipPlugin({
+      path: path.resolve(__dirname, 'artifacts'),
+      filename: 'firefox-extension.zip',
+    })
   ],
 };
