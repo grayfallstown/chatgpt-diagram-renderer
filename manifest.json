@@ -1,15 +1,19 @@
 {
-  "manifest_version": 2,
+  "manifest_version": 3,
   "name": "ChatGPT Diagram Renderer",
   "version": "1.0",
+  "default_locale": "en",
   "description": "Renders Diagrams like PlantUML directly in the ChatGPT Webinterface.",
   "permissions": [
     "activeTab",
+    "scripting"
+  ],
+  "host_permissions": [
     "https://chatgpt.com/*"
   ],
   "content_scripts": [
     {
-      "matches": ["https://chatgpt.com/*"],
+      "matches": ["https://chatgpt.com/*", "https://chatgpt.com/c/*", "https://chatgpt.com/g/*/c/*"],
       "js": ["content.bundle.js"],
       "run_at": "document_idle"
     }

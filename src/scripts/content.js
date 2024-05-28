@@ -95,6 +95,11 @@ function applyDarkModeStyles() {
   document.head.append(style);
 }
 
+// Logging function
+function log(message) {
+  console.log(`[ChatGPT Diagram Renderer] ${message}`);
+}
+
 // Create modal for image zoom
 function createModal(imageUrl) {
   const modal = document.createElement('div');
@@ -196,3 +201,5 @@ function periodicCheckAndProcessCodeBlocks() {
 
 applyDarkModeStyles();
 setInterval(periodicCheckAndProcessCodeBlocks, 3000);
+
+log("Initialized");

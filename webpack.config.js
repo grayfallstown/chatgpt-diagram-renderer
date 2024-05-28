@@ -43,7 +43,8 @@ module.exports = {
     new CopyWebpackPlugin({
       patterns: [
         { from: path.resolve(__dirname, 'manifest.json'), to: 'manifest.json' },
-        { from: path.resolve(__dirname, 'icons'), to: 'icons' }
+        { from: path.resolve(__dirname, 'icons'), to: 'icons' },
+        { from: path.resolve(__dirname, '_locales'), to: '_locales' }
       ],
     }),
     new ZipPlugin({
