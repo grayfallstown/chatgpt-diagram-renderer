@@ -90,6 +90,21 @@ Special thanks to the developers of [Kroki.io](https://kroki.io) and [Code Copil
 
 This project is open source and licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
 
+## Build
+
+Setup node js first!
+
+run `build.bat` if you are on windows.
+
+Otherwise run:
+
+``bash
+npm install
+npm run build
+cd artifacts/
+ls
+``
+
 ---
 
 *Thank you for using ChatGPT Diagram Renderer!*
