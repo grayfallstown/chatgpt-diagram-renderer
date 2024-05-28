@@ -66,7 +66,7 @@ The extension is not yet available in the extension stores. Stay tuned for the o
 <!-- Add extension store badges when available -->
 <!-- 
 [![Chrome Web Store](https://developer.chrome.com/webstore/images/ChromeWebStore_Badge_v2_496x150.png)](https://chrome.google.com/webstore/detail/your-extension-id)
-[![Firefox Add-ons](https://addons.mozilla.org/en-US/firefox/files/img/badges/get-the-addon.svg)](https://addons.mozilla.org/en-US/firefox/addon/your-extension-id)
+[![Firefox Add-ons](https://addons.mozilla.org/en-US/firefox/files/img/badges/get-the-addon.svg)](https://addons.mozilla.org/de/firefox/addon/chatgpt-diagram-renderer/)
 -->
 
 ## Usage
