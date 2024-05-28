@@ -105,6 +105,8 @@ cd artifacts/
 ls
 ``
 
+Note: If you run this as a temporary extension and not from the extension stores, you need to click on the extension icon while using chatgpt or it will not load. It is a technical limitation of manifest v3.
+
 ---
 
 *Thank you for using ChatGPT Diagram Renderer!*
