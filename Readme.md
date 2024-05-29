@@ -89,6 +89,7 @@ Manual installation:*
 4. Click "Load unpacked" and select the extracted folder.
 
 *Firefox*
+
 (You can use the [extension store link above](https://addons.mozilla.org/de/firefox/addon/chatgpt-diagram-renderer/) instead of doing this manually)
 1. Download the ZIP file and extract it.
 2. Open Firefox and go to `about:debugging#/runtime/this-firefox`.
