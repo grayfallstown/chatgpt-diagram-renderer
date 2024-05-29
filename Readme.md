@@ -8,7 +8,9 @@
 
 Renders diagrams and charts like PlantUML, Mermaid, and many more directly in the ChatGPT web interface using [Kroki.io](https://kroki.io). This extension supports a variety of diagram types and ensures that all diagrams are rendered seamlessly within the chat.
 
-![Screenshot](docs/screenshot.png)
+![Screenshot](docs/screenshot4.png)
+![Screenshot](docs/screenshot3.png)
+![Screenshot](docs/screenshot2.png)
 
 ## Features
 
