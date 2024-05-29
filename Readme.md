@@ -63,13 +63,44 @@ This extension supports the following diagram types:
 
 ## Installation
 
-The extension is not yet available in the extension stores. Stay tuned for the official release!
-
 <!-- Add extension store badges when available -->
 <!-- 
 [![Chrome Web Store](https://developer.chrome.com/webstore/images/ChromeWebStore_Badge_v2_496x150.png)](https://chrome.google.com/webstore/detail/your-extension-id)
 -->
-[![Firefox Add-ons](https://addons.mozilla.org/en-US/firefox/files/img/badges/get-the-addon.svg)](https://addons.mozilla.org/de/firefox/addon/chatgpt-diagram-renderer/)
+
+*In Stores:*
+
+- [Firefox Add-ons](https://addons.mozilla.org/de/firefox/addon/chatgpt-diagram-renderer/)
+- Microsoft Add-ons (comming soon!)
+- Chrome Add-ons (will take a while)
+
+Manual installation:*
+
+*Chrome*
+1. Download the ZIP file and extract it.
+2. Open Chrome and go to `chrome://extensions/`.
+3. Enable "Developer mode" in the top right.
+4. Click "Load unpacked" and select the extracted folder.
+
+*Edge*
+1. Download the ZIP file and extract it.
+2. Open Edge and go to `edge://extensions/`.
+3. Enable "Developer mode" in the bottom left.
+4. Click "Load unpacked" and select the extracted folder.
+
+*Firefox*
+(You can use the [extension store link above](https://addons.mozilla.org/de/firefox/addon/chatgpt-diagram-renderer/) instead of doing this manually)
+1. Download the ZIP file and extract it.
+2. Open Firefox and go to `about:debugging#/runtime/this-firefox`.
+3. Click "Load Temporary Add-on".
+4. Select any file inside the extracted folder (e.g., manifest.json).
+
+*Opera*
+1. Download the ZIP file and extract it.
+2. Open Opera and go to `opera://extensions/`.
+3. Enable "Developer mode" in the top right.
+4. Click "Load unpacked" and select the extracted folder.
+
 
 ## Usage
 

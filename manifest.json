@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "ChatGPT Diagram Renderer",
-  "version": "1.0",
+  "version": "1.0.0",
   "default_locale": "en",
   "description": "Renders Diagrams like PlantUML directly in the ChatGPT Webinterface.",
   "permissions": [
