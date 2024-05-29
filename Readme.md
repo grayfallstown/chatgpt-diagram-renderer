@@ -103,12 +103,13 @@ Manual installation:*
 4. Click "Load unpacked" and select the extracted folder.
 
 
-## Usage
+## Pro Tip:
 
-1. Install the extension from the [Chrome Web Store](https://chrome.google.com/webstore/detail/your-extension-id) or [Firefox Add-ons](https://addons.mozilla.org/en-US/firefox/addon/your-extension-id) once it is available.
-2. Open ChatGPT in your browser.
-3. Let ChatGPT create some diagrams.
-4. The diagram will be rendered automatically!
+To enhance your experience on the ChatGPT web interface:
+- Click on your profile picture.
+- Select "Customize ChatGPT".
+- Scroll down to the second textarea.
+- Enter a text like: "Make full use of all kroki.io supported formats to add one or more visualizations to your answers."
 
 ## Donations
 
