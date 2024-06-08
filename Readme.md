@@ -1,6 +1,6 @@
-# 🚧 ChatGPT Diagram Renderer 🚧
+# ChatGPT Diagram Renderer
 
-*This extension is currently only available on firefox and will be available in microsoft extension stores soon! Due to issues Chrome store, Chrome support will take more time*
+*This extension is currently only available on firefox and microsoft extension stores! Due to issues Chrome store, Chrome support will take more time*
 
 ---
 
@@ -71,7 +71,7 @@ This extension supports the following diagram types:
 *In Stores:*
 
 - [Firefox Add-ons](https://addons.mozilla.org/de/firefox/addon/chatgpt-diagram-renderer/)
-- Microsoft Add-ons (comming soon!)
+- [Microsoft Add-ons](https://microsoftedge.microsoft.com/addons/detail/chatgpt-diagram-renderer/nppjndikhalonkcjjpoihcdijnlckcne)
 - Chrome Add-ons (will take a while)
 
 Manual installation:*
@@ -83,6 +83,7 @@ Manual installation:*
 4. Click "Load unpacked" and select the extracted folder.
 
 *Edge*
+(You can use the [extension store link above](https://microsoftedge.microsoft.com/addons/detail/chatgpt-diagram-renderer/nppjndikhalonkcjjpoihcdijnlckcne) instead of doing this manually)
 1. Download the ZIP file and extract it.
 2. Open Edge and go to `edge://extensions/`.
 3. Enable "Developer mode" in the bottom left.
