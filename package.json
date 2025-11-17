@@ -1,6 +1,6 @@
 {
   "name": "chatgpt-diagram-renderer",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Renders Diagrams like PlantUML directly in the ChatGPT Webinterface.",
   "scripts": {
     "build": "webpack --mode production",
