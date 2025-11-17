@@ -3,11 +3,7 @@
   "name": "ChatGPT Diagram Renderer",
   "version": "1.0.0",
   "default_locale": "en",
-  "description": "Renders Diagrams like PlantUML directly in the ChatGPT Webinterface.",
-  "permissions": [
-    "activeTab",
-    "scripting"
-  ],
+  "description": "Renders Diagrams like PlantUML directly in the ChatGPT Webinterface via kroki.io.",
   "host_permissions": [
     "https://chatgpt.com/*"
   ],
